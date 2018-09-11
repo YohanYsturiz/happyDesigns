@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Layout msg="ImgWordl"/>
+    <MainPrimary/>
+    <Footer/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Layout from './components/Layout.vue'
+import MainPrimary from './components/MainPrimary.vue'
+import Footer from './components/Footer.vue'
+import {EventBus} from'./plugins/EventBus.js'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Layout,
+    MainPrimary,
+    Footer
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 10px;
+  }
+  .title-one {
+          font-family: 'Baloo Tammudu', cursive; 
+          font-size: 3rem;
+          color: #778a99;
+  }
+  .title-two {
+          font-family: 'Baloo Tammudu', cursive; 
+          font-size: 2rem;
+          color: #778a99;
+  }
 </style>
