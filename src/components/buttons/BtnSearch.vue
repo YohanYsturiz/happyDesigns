@@ -1,5 +1,5 @@
 <template>
-    <el-button type="success" class="btn-sucess-alegra" round @click="emitSearch()"> Buscar </el-button>                    
+    <el-button type="success" class="btn-sucess-alegra" round @click.stop="emitSearch()"> Buscar </el-button>                    
 </template>
 <script>
 
@@ -9,10 +9,7 @@ export default {
     name: 'BtnSearch',
     methods: {
         emitSearch() {
-            EventBus.$emit('btnChildren:change', {visibility: false, visibilityList: true});
-        },
-        BackTop() {
-            EventBus.$emit('btnChildren:change', {visibility: true, visibilityList: false});
+            EventBus.$emit('searchActive:change', {visibility: false, visibilityList: true, visibilityLoader: true, back: false});
         }
     }
 }

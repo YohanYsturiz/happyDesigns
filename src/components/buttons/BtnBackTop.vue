@@ -8,11 +8,8 @@ import {EventBus} from '@/plugins/EventBus.js'
 export default {
     name: 'BtnBackTop',
     methods: {
-        emitSearch() {
-            EventBus.$emit('btnChildren:change', {visibility: false, visibilityList: true});
-        },
         BackTop() {
-            EventBus.$emit('btnChildren:change', {visibility: true, visibilityList: false});
+            EventBus.$emit('searchActive:change', {visibility: true, visibilityList: false, visibilityLoader: false, back: true});
         }
     }
 }

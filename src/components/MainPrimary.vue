@@ -14,14 +14,16 @@
                         <btn-search/>
                     </el-col>
                 </el-row>
-                <el-row>
-                </el-row>
             </el-card>
         </el-col>
     </el-row>
+    <el-row v-if="visibilityLoader">
+        <div class="loader"></div>
+        <span class="text-loader"> Buscando imagenes... </span>
+    </el-row>
     <el-row v-if="visibilityList" :gutter="20" type="flex" class="row-bg" justify="space-around">
         <el-col :span="20">
-            <show-case-img />
+            <show-case-img :dataImg="infoResponse"/>
         </el-col>
     </el-row>
   </el-main>
@@ -34,12 +36,26 @@ import BtnSearch from './buttons/BtnSearch.vue'
 import {EventBus} from '@/plugins/EventBus.js'
 import axios from 'axios'
 
+var that = this;
+
 export default {
     name: 'MainPrimary',
     created () {
-        EventBus.$on('btnChildren:change', (obj) => {
-            console.log('si funciona soy tu padre');
-            this.searchImgs(obj);
+        EventBus.$on('btnChildren:change', (obj, descriptor) => {
+            // alter visibility of components
+            if (obj.back){
+                this.visibility = obj.visibility;
+                this.visibilityList = obj.visibilityList;
+                this.visibilityLoader = obj.visibilityLoader;    
+            }else {
+                this.visibility = obj.visibility;
+                this.visibilityLoader = obj.visibilityLoader;
+            }
+            this.SearchSellers(obj, descriptor);
+        });
+
+        EventBus.$on('likeUser', (obj) => {
+            this.LikeUser(obj);
         });
     },
     components: {
@@ -51,25 +67,77 @@ export default {
         return {
             visibility: true,
             visibilityList: false,
+            visibilityLoader: false,
             infoResponse: '',
+            infoSellers: '',
         };
     },
     methods: {
-        searchImgs(obj) {
-            let dataViewComponents = obj;
-            axios.get(`https://pixabay.com/api/?key=10090219-2d4776f756fac1a33b6ccc47a&q=orange&image_type=photo`)
+        SearchSellers(obj, descriptor) {
+            var config = { headers: {Authorization: 'Basic ' + btoa('yohanysturiz@gmail.com:02845eb232d5eaff989b')}}
+            axios.get(`https://app.alegra.com/api/v1/sellers/`, config)
                 .then(response => {
-                // JSON responses are automatically parsed.
-                console.log('llegaron? ---->', response.data)
-                this.infoResponse = response.data;
-                this.visibility = dataViewComponents.visibility;
-                this.visibilityList = dataViewComponents.visibilityList;
-                //this.posts = response.data
+                    // JSON responses are automatically parsed.
+                    this.infoSellers = response.data
+                    
+                    // call function search imgs!
+                    this.searchImgs(obj, descriptor);
                 })
                 .catch(e => {
-                this.errors.push(e)
+                    console.error('error becerro', e)
+                //this.errors.push(e)
             })
+        },
+
+        searchImgs(obj, searchImgs) {
+            let word = searchImgs; 
+            axios.get(`https://pixabay.com/api/?key=10090219-2d4776f756fac1a33b6ccc47a&q=${word}&image_type=photo`)
+                .then( (response) => {
+                    // JSON responses are automatically parsed.
+                    response.data.word = word;
+                    response.data.sellers = this.infoSellers;
+
+                    this.infoResponse = response.data;
+                    // associate user and images function
+                    this.associateSellersImgs(obj)
+                })
+                .catch(e => {
+                    console.error('error becerro', e)
+                // this.errors.push(e)
+            })
+        },
+
+        associateSellersImgs(obj) {
+            let dataViewComponents = obj;
+            let sellersData = this.infoSellers;
+            let imgsData = this.infoResponse.hits;
+            let infoRelations = new Array;
+        
+            for (let i=0; i < sellersData.length; i++){                
+                imgsData[i].name_user = sellersData[i].name;
+                imgsData[i].id_user = sellersData[i].id;
+                imgsData[i].status_user = sellersData[i].status;
+                imgsData[i].likes_user = 0;
+
+                infoRelations.push(imgsData[i]);
+            }
+
+            this.infoResponse.hits = infoRelations;
+            
+            if (dataViewComponents.visibilityList)  this.visibilityLoader = false;
+            if (dataViewComponents.back === false) this.visibilityList = dataViewComponents.visibilityList;
+        },
+
+        LikeUser(obj) {
+            console.log('[X] likeUser', obj);            
+            this.infoResponse['hits'].forEach(element => {
+                if (element.id_user === obj.id_user){
+                    this.$set(element, 'likes_user', element.likes_user+1); 
+                }
+            });
+            console.log('Funciono? -->', this.infoResponse.hits)
         }
+
     }
 }
 </script>
@@ -84,5 +152,11 @@ export default {
     }
     .bg-purple {
         background: #f1f4f7;
+    }
+    .text-loader{
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 1rem;
+        color: #778a99;
+        margin: 8px;
     }
 </style>

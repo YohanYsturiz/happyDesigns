@@ -1,17 +1,27 @@
 <template>
-  <el-form ref="form" label-width="120px" size="large">
-    <el-input placeholder="Ingrese una palabra" v-model="input3" prefix-icon="el-icon-search" class="input-radius">
+    <el-input placeholder="Ingrese una palabra" v-model="inputSearch" prefix-icon="el-icon-search" class="input-radius">
     </el-input>
-  </el-form>
 </template>
 
 <script>
+import {EventBus} from '@/plugins/EventBus.js'
+
   export default {
     name: 'InputSearch',
+    created () {
+      EventBus.$on('searchActive:change', (obj) => {
+          this.emitSearch(obj, this.inputSearch)
+      });
+    },
     data() {
         return {
-          input3: ''
+          inputSearch: ''
       }
+    },
+    methods: {
+        emitSearch(obj, descriptor) {
+            EventBus.$emit('btnChildren:change', obj, descriptor);
+        }
     }
   };
 </script>
