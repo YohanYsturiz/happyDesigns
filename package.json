@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "gh-pages -d src"
+    "deploy": "gh-pages -d dist"
   },
   "homepage": "htpps://YohanYsturiz.github.io/alegra-test",
   "dependencies": {
