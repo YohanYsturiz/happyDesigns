@@ -8,12 +8,12 @@
                 </el-col>
             </el-row>
             <el-row :gutter="10" type="flex" justify="center">
-                <el-col :span="6" :xs="12">
+                <!-- <el-col :span="6" :xs="12">
                     <input-search/>
                 </el-col>
                 <el-col :span="2" :xs="12">
                     <btn-search/>
-                </el-col>
+                </el-col> -->
             </el-row>
             <PosterImg :infoPoster="item" v-for="item in infoData" :key="item.id"/>
         </el-row>

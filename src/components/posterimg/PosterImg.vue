@@ -1,17 +1,17 @@
 <template>
     <el-col :span="6">
-                <el-card :body-style="{ padding: '0px' }" class="border-radius">
-                <!-- <div class="image bg-img" style="background-image: url({InfoImg.userImageURL});"></div> -->
-                <img :src=InfoImg.webformatURL alt="" class="image bg-img">
-                <div style="padding: 14px;">
-                    <span>{{InfoImg.name_user}}</span>
-                    <div class="bottom clearfix" @click="likeImg(InfoImg.id_user, InfoImg.id)">
-                        <el-tag class="tag-likes" size="mini">
-                            <i class="far fa-thumbs-up"></i> {{ addLikes }}/20
-                        </el-tag>
-                    </div>
+        <el-card :body-style="{ padding: '0px' }" class="border-radius">
+            <!-- <div class="image bg-img" style="background-image: url({InfoImg.userImageURL});"></div> -->
+            <img :src=InfoImg.webformatURL alt="" class="image bg-img">
+            <div style="padding: 14px;">
+                <span>{{InfoImg.name_user}}</span>
+                <div class="bottom clearfix" @click="likeImg(InfoImg.id_user, InfoImg.id)">
+                    <el-tag class="tag-likes" size="mini">
+                        <i class="far fa-thumbs-up"></i> {{ addLikes() }}/20
+                    </el-tag>
                 </div>
-                </el-card>
+            </div>
+        </el-card>
     </el-col>
 </template>
 <script>
@@ -26,20 +26,28 @@ export default {
         return {
             InfoImg: this.infoPoster,
             infoLikes: 0,
+            valueMaximum: 20
         };
     },
     computed: {
-        addLikes: function () {
-            return this.InfoImg.likes_user + this.infoLikes
-        }
+        // addLikes: function () {
+        //     return this.InfoImg.likes_user + this.infoLikes
+        // }
     },
     methods: {
         likeImg(id_user, id_img) {
             console.log('[X] likeImg ');                        
             let likeData = {id_user, id_img}
-            this.infoLikes += 1;
+            this.validWinner()
             EventBus.$emit('likeUser', likeData);
-            console.log('Lo cambio ?', this.InfoImg.likes_user)
+        },
+        addLikes: function () {
+            console.log('sumo (2) --> ', this.infoLikes)
+            if (this.InfoImg.likes_user >= this.valueMaximum) return this.valueMaximum
+            return this.InfoImg.likes_user
+        },
+        validWinner: function () {
+            if (this.InfoImg.likes_user < this.valueMaximum) this.infoLikes += 1; 
         }
     }
 }

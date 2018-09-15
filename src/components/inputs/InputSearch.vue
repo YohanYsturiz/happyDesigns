@@ -9,18 +9,19 @@ import {EventBus} from '@/plugins/EventBus.js'
   export default {
     name: 'InputSearch',
     created () {
-      EventBus.$on('searchActive:change', (obj) => {
-          this.emitSearch(obj, this.inputSearch)
+      EventBus.$on('searchActive', (obj) => {  
+        //EventBus.$emit('btnChildren', obj, this.inputSearch);
+        this.emitSearch(obj, this.inputSearch)
       });
     },
     data() {
         return {
-          inputSearch: ''
+          inputSearch: '',
       }
     },
     methods: {
         emitSearch(obj, descriptor) {
-            EventBus.$emit('btnChildren:change', obj, descriptor);
+            EventBus.$emit('btnChildren', obj, descriptor);
         }
     }
   };

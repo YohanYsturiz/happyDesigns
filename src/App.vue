@@ -41,4 +41,28 @@ export default {
           font-size: 2rem;
           color: #778a99;
   }
+  .title-three {
+          font-family: 'Baloo Tammudu', cursive; 
+          font-size: 1.3rem;
+          float: left;
+          color: #778a99;
+  }
+  .text-loader{
+        font-family: 'Baloo Tammudu', cursive;
+        font-size: 1rem;
+        color: #778a99;
+        margin: 8px;
+    }
+  .text-info{
+      font-family: 'Baloo Tammudu', cursive;
+      font-size: 0.8rem;
+      color: #778a99;
+      margin: 8px;
+  }
+  .text-info-money{
+      font-family: 'Baloo Tammudu', cursive;
+      font-size: 1rem;
+      color: #8CB46C;
+      margin: 8px;
+  }
 </style>

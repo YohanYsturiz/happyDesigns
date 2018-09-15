@@ -9,7 +9,7 @@ export default {
     name: 'BtnSearch',
     methods: {
         emitSearch() {
-            EventBus.$emit('searchActive:change', {visibility: false, visibilityList: true, visibilityLoader: true, back: false});
+            EventBus.$emit('searchActive', {visibility: false, visibilityList: true, visibilityLoader: true, back: false});
         }
     }
 }
