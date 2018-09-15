@@ -6,14 +6,16 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "gh-pages -d dist"
+    "deploy": "node ./node_modules/vue-gh-pages/index.js",
+    "publish": "npm run build && rm -rf docs; cp -r dist docs && sed -i -e 's/src=\\//src=/g' docs/index.html ; sed -i -e 's/href=\\//href=/g' docs/index.html"
   },
-  "homepage": "htpps://YohanYsturiz.github.io/alegra-test",
+  "homepage": "https://github.com/YohanYsturiz/alegra-test",
   "dependencies": {
     "axios": "^0.18.0",
     "element-ui": "^2.4.6",
     "gh-pages": "^1.2.0",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-gh-pages": "^1.19.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
