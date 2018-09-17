@@ -9,8 +9,9 @@ export default {
     name: 'BtnBackTop',
     methods: {
         BackTop() {
-            EventBus.$emit('searchActive', {visibility: true, visibilityList: false, visibilityLoader: false, back: true});
+            EventBus.$emit('backPage', {visibility: true, visibilityList: false, visibilityLoader: false, back: true});
             EventBus.$emit('closeInvoice');
+            window.location.reload(true);
         }
     }
 }

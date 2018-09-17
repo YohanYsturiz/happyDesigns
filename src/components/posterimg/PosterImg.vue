@@ -2,7 +2,7 @@
     <el-col :span="6">
         <el-card :body-style="{ padding: '0px' }" class="border-radius">
             <!-- <div class="image bg-img" style="background-image: url({InfoImg.userImageURL});"></div> -->
-            <img :src=InfoImg.webformatURL alt="" class="image bg-img">
+            <img style="cursor: pointer" :src=InfoImg.webformatURL alt="" class="image bg-img" @click="likeImg(InfoImg.id_user, InfoImg.id)">
             <div style="padding: 14px;">
                 <span>{{InfoImg.name_user}}</span>
                 <div class="bottom clearfix" @click="likeImg(InfoImg.id_user, InfoImg.id)">
@@ -43,11 +43,11 @@ export default {
         },
         addLikes: function () {
             console.log('sumo (2) --> ', this.infoLikes)
-            if (this.InfoImg.likes_user >= this.valueMaximum) return this.valueMaximum
+            if (this.InfoImg.likes_user >= this.valueMaximum) return this.valueMaximum -1
             return this.InfoImg.likes_user
         },
         validWinner: function () {
-            if (this.InfoImg.likes_user < this.valueMaximum) this.infoLikes += 1; 
+            if (this.InfoImg.likes_user < this.valueMaximum) this.infoLikes += 3; 
         }
     }
 }

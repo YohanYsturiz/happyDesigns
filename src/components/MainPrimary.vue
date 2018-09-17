@@ -83,27 +83,26 @@ var that = this;
 export default {
     name: 'MainPrimary',
     created () {
+        EventBus.$on('backPage', (obj) => {
+            this.infoResponse = '';
+            this.infoSellers = '';   
+            this.visibility = obj.visibility;
+            this.visibilityList = obj.visibilityList;
+            this.visibilityLoader = obj.visibilityLoader; 
+            // EventBus.$off('btnChildren')
+        })
+
         EventBus.$on('btnChildren', (obj, descriptor) => {
             // alter visibility of components
-            console.log('objeto recibido -->', obj)
-            console.log('descriptor --->', descriptor)
-            if (obj.back){
-                this.infoResponse = {};   
-                console.log('volverrrrrrrr!!!', this.infoResponse)
-                this.visibility = obj.visibility;
-                this.visibilityList = obj.visibilityList;
-                this.visibilityLoader = obj.visibilityLoader; 
-            }else {
-                this.visibility = obj.visibility;
-                this.visibilityLoader = obj.visibilityLoader;
+            this.visibility = obj.visibility;
+            this.visibilityLoader = obj.visibilityLoader;
             this.SearchSellers(obj, descriptor);
-            }
-
         });
 
         EventBus.$on('likeUser', (obj) => {
             this.LikeUser(obj);
         });
+
     },
     components: {
         InputSearch,
@@ -147,7 +146,7 @@ export default {
             axios.get(`https://pixabay.com/api/?key=10090219-2d4776f756fac1a33b6ccc47a&q=${word}&image_type=photo`)
                 .then( (response) => {
                     // JSON responses are automatically parsed.
-                    console.log('imagenes', response.data)
+                    console.log('imagenes nuevas-->', response.data)
                     response.data.word = word;
                     response.data.sellers = this.infoSellers;
 
@@ -176,20 +175,23 @@ export default {
                 infoRelations.push(imgsData[i]);
             }
 
+            console.log('Agregando lo nuevo -----> ', infoRelations);
             
             this.infoResponse.hits = infoRelations;
+            
+            console.log('esto es lo de info hits --->', this.infoResponse.hits)
             
             if (dataViewComponents.visibilityList)  this.visibilityLoader = false;
             if (dataViewComponents.back === false) this.visibilityList = dataViewComponents.visibilityList;
         },
 
         LikeUser(obj) {
-            console.log('[X] likeUser', obj);            
+            // console.log('[X] likeUser', obj);            
             let completed;
             completed = this.validateWinner()
             this.infoResponse['hits'].forEach(element => {
                 if (element.id_user === obj.id_user && completed === false){
-                    this.$set(element, 'likes_user', element.likes_user+1); 
+                    this.$set(element, 'likes_user', element.likes_user+3); 
                 }
             });
 

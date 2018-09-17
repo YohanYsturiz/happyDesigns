@@ -10,7 +10,6 @@ import {EventBus} from '@/plugins/EventBus.js'
     name: 'InputSearch',
     created () {
       EventBus.$on('searchActive', (obj) => {  
-        //EventBus.$emit('btnChildren', obj, this.inputSearch);
         this.emitSearch(obj, this.inputSearch)
       });
     },

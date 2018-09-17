@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Layout msg="ImgWordl"/>
+    <Layout msg="Imagenes del mundo"/>
     <MainPrimary/>
     <Footer/>
   </div>
