@@ -1,5 +1,5 @@
 <template>
-    <el-input placeholder="Ingrese una palabra" v-model="inputSearch" prefix-icon="el-icon-search" class="input-radius">
+    <el-input placeholder="Ingrese una palabra" v-model="inputSearch" prefix-icon="el-icon-search"  class="input-radius">
     </el-input>
 </template>
 
@@ -27,7 +27,7 @@ import {EventBus} from '@/plugins/EventBus.js'
 </script>
 
 <style scoped>
-  .input-radius {
+  input {
       border-radius: 50px !important;
   }
 </style>

@@ -4,12 +4,14 @@
         <el-col :span="20" class="grid-content">
             <el-card :justify="center" shadow="always" class="bg-purple">
                 <div>
-                    <span class="title-one">Busca una imagen</span>
+                    <span class="title-one">Busca la imagen que quieras con solo una palabra...</span>
                 </div>
-                <el-row :gutter="10" type="flex" justify="center">
-                    <el-col :span="6" :xs="12">
+                <el-row :gutter="12" type="flex" justify="center">
+                    <el-col :span="12" :xs="12">
                         <input-search/>
                     </el-col>
+                </el-row>
+                <el-row :gutter="12" type="flex" justify="center" class="mt-10">
                     <el-col :span="2" :xs="12">
                         <btn-search/>
                     </el-col>
@@ -21,9 +23,9 @@
         <div class="loader"></div>
         <span class="text-loader"> Buscando imagenes... </span>
     </el-row>
-    <el-row v-if="visibilityList" :gutter="20" type="flex" class="row-bg" justify="space-around">
+    <el-row v-if="visibilityList" :gutter="10" type="flex" class="row-bg" justify="space-around">
         <el-col :span="20">
-            <show-case-img :dataImg="infoResponse"/>
+            <PosterImg :infoPoster="item" v-for="item in infoResponse.hits" :key="item.id" @click.native="ViewFullScreen();"/>            
         </el-col>
     </el-row>
     <el-row v-if="visibilityFormInvoice" :gutter="20" type="flex" class="row-bg" justify="space-around">
@@ -34,37 +36,7 @@
     
     <!-- Modal donde se carga la informacion del ganador -->
     <el-dialog :visible.sync="visibilityModal" center>
-        <el-row type="flex" justify="center" class="row-bg">
-            <el-col :span="10">
-                <label class="title-three"> Tenemos un ganador!</label>
-            </el-col>
-        </el-row>
-        <el-row type="flex">
-            <el-col :span="24">
-                <span class="text-info">Gracias por dar likes a la imagenes de nuestros vendedores!, la competencia a finalizado</span>
-            </el-col>
-        </el-row>
-        <el-row justify="center" type="flex">
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <el-row type='flex' justify="center">
-                        <el-col :span="12"> 
-                            <label class="text-info">Vendedor Ganador</label> 
-                        </el-col>
-                    </el-row>
-                    <el-col :span="24"> 
-                        <label class="text-info">Nombre: {{this.userWinner.name_user}}</label>
-                    </el-col>
-                    <el-col :span="24"> 
-                        <label class="text-info">Likes: {{this.userWinner.likes}}</label> 
-                    </el-col>
-                </el-card>
-            </el-col>
-        </el-row>
-        <div slot="footer" class="dialog-footer">
-            <!-- <el-button type="default" @click="visibilityModal = false">Cerrar</el-button> -->
-            <el-button type="primary" @click.stop="CreateInvoice();" >Crear factura</el-button>
-        </div>
+        
     </el-dialog>
   </el-main>
 </template>
@@ -73,6 +45,7 @@
 import InputSearch from './inputs/InputSearch.vue'
 import ShowCaseImg from './viewimg/ShowCaseImg.vue'
 import BtnSearch from './buttons/BtnSearch.vue'
+import PosterImg from './posterimg/PosterImg.vue'
 // import ModalWinner from './modals/ModalWinner.vue'
 import FormCreateInvoice from './invoice/FormCreate.vue'
 import {EventBus} from '@/plugins/EventBus.js'
@@ -103,17 +76,20 @@ export default {
             this.LikeUser(obj);
         });
 
+        this.imagesAll();
+
     },
     components: {
         InputSearch,
         ShowCaseImg,
         BtnSearch,
-        FormCreateInvoice
+        FormCreateInvoice,
+        PosterImg
     },
     data() {
         return {
             visibility: true,
-            visibilityList: false,
+            visibilityList: true,
             visibilityLoader: false,
             visibilityFormInvoice: false,
             visibilityModal: false,
@@ -124,6 +100,17 @@ export default {
         };
     },
     methods: {
+        imagesAll() {
+            axios.get(`https://pixabay.com/api/?key=10090219-2d4776f756fac1a33b6ccc47a&image_type=all`)
+                .then( (response) => {
+                    console.log('first search --->', response.data)
+                    this.infoResponse = response.data;
+                })
+                .catch(e => {
+                    console.error('error', e)
+            })
+        },
+
         SearchSellers(obj, descriptor) {
             var config = { headers: {Authorization: 'Basic ' + btoa('yohanysturiz@gmail.com:02845eb232d5eaff989b')}}
             axios.get(`https://app.alegra.com/api/v1/sellers/`, config)
@@ -222,6 +209,10 @@ export default {
             this.visibilityList = false;
             this.visibilityModal = false;
             this.visibilityFormInvoice = true;
+        },
+
+        viewFullScreen() {
+            this.visibilityModal = true;
         }
 
     }
@@ -237,7 +228,9 @@ export default {
         transform: translateY(25vh)
     }
     .bg-purple {
-        background: #f1f4f7;
+        /* background: #f1f4f7; */
+        border-radius: 50px;
     }
+    
     
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Layout msg="Imagenes del mundo"/>
+    <Layout msg="CheerfulDesigns"/>
     <MainPrimary/>
     <Footer/>
   </div>
@@ -33,7 +33,7 @@ export default {
   }
   .title-one {
           font-family: 'Baloo Tammudu', cursive; 
-          font-size: 3rem;
+          font-size: 2rem;
           color: #778a99;
   }
   .title-two {

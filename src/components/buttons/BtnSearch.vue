@@ -16,14 +16,14 @@ export default {
 </script>
 <style scoped>
     .btn-sucess-alegra {
-        background-color: #008080;
-        background-color: #008080;
-        border-color: #008080;
+        background-color: #23E1C7;
+        background-color: #23E1C7;
+        border-color: #23E1C7;
     }
     .btn-sucess-alegra:hover, .btn-sucess-alegra:active, .btn-sucess-alegra:focus {
-        background-color: #05a0a0;
-        background-color: #05a0a0;
-        border-color: #05a0a0;
+        background-color: #23E1C7;
+        background-color: #23E1C7;
+        border-color: #23E1C7;
     }
 </style>
 
