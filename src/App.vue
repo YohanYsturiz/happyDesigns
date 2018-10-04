@@ -18,6 +18,11 @@ export default {
     Layout,
     MainPrimary,
     Footer
+  },
+  devServer: {
+    watchOptions: {
+      poll: true
+    }
   }
 }
 </script>

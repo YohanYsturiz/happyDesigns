@@ -15,7 +15,8 @@
     "element-ui": "^2.4.6",
     "gh-pages": "^1.2.0",
     "vue": "^2.5.17",
-    "vue-gh-pages": "^1.19.0"
+    "vue-gh-pages": "^1.19.0",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",

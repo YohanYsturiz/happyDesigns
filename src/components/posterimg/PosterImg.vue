@@ -1,9 +1,9 @@
 <template>
     <el-col :span="6">
-        <el-card :body-style="{ padding: '0px' }" class="card-border-radius">
+        <el-card :body-style="{ padding: '0px' }" class="card-border-radius" @click.native="viewFullScreen()">
             <!-- <div class="image bg-img" style="background-image: url({InfoImg.userImageURL});"></div> -->
             <!-- <img style="cursor: pointer" :src=InfoImg.webformatURL alt="" class="image bg-img" @click="likeImg(InfoImg.id_user, InfoImg.id)"> -->
-            <el-row :span="24" type=flex :style=imgFull @click="likeImg(InfoImg.id_user, InfoImg.id)">
+            <el-row :span="24" type=flex :style=imgFull>
                 <el-col :span="12">
                     <span class="text-card-user">{{InfoImg.user}}</span>
                 </el-col>
@@ -11,7 +11,7 @@
                     <el-tag class="tag-dislikes" size="mini" @click="likeImg(InfoImg.id_user, InfoImg.id)">
                         <i class="fas fa-thumbs-down"></i>
                     </el-tag>
-                    <el-tag class="tag-likes" size="mini" @click="likeImg(InfoImg.id_user, InfoImg.id)">
+                    <el-tag class="tag-likes" size="mini" @click.native="likeImg(InfoImg.id_user, InfoImg.id)">
                         <i class="far fa-thumbs-up"></i> {{ addLikes() }}
                     </el-tag>
                     <el-tag class="tag-heart" size="mini" @click="likeImg(InfoImg.id_user, InfoImg.id)">
@@ -20,21 +20,28 @@
                 </el-col>
             </el-row>            
         </el-card>
+        <!-- Modal donde se carga la informacion del ganador -->
+        <modal-full-screen-img :infoModal="infoModal" :visibility="visibilityModal"/>
     </el-col>
 </template>
 <script>
 import {EventBus} from '@/plugins/EventBus.js'
+import ModalFullScreenImg from '../modals/ModalFullScreenImg'
 
 export default {
     name: "PosterImg",
     props: {
         infoPoster: Object
     },
+    components: {
+      ModalFullScreenImg  
+    },
     data() {
         return {
             InfoImg: this.infoPoster,
             infoLikes: 0,
-            valueMaximum: 20
+            valueMaximum: 20,
+            visibilityModal: false
         };
     },
     computed: {
@@ -45,6 +52,16 @@ export default {
             let urlImg = this.InfoImg.webformatURL
             console.log(`[X] params construct style:`, urlImg);
             return `background-image: url(${urlImg}); background-position: center; background-size: cover; height: 280px !important; cursor:pointer;`
+        },
+        infoModal: function () {
+            let urlImg = this.InfoImg.webformatURL
+            console.log(`[X] params construct style:`, urlImg);
+            let data = {
+                imgFullScreen: `background-image: url(${urlImg}); background-position: center; background-size: contain; height: 85vh !important; border-radius:30px;`,
+                userName: this.InfoImg.user,
+                linkDownload: this.InfoImg.largeImageURL
+            }
+            return data
         }
     },
     methods: {
@@ -53,6 +70,8 @@ export default {
             let likeData = {id_user, id_img}
             this.validWinner()
             EventBus.$emit('likeUser', likeData);
+            this.visibilityModal = true;
+            //this.viewFullScreen()
         },
         addLikes: function () {
             console.log('sumo (2) --> ', this.infoLikes)
@@ -61,12 +80,16 @@ export default {
         },
         validWinner: function () {
             if (this.InfoImg.likes_user < this.valueMaximum) this.infoLikes += 3; 
+        },
+        viewFullScreen: function () {
+            console.log('vamos modal')
+            this.visibilityModal = true;
         }
     }
 }
 </script>
 
-<style>
+<style scope>
   .card-border-radius {
     border-radius: 30px !important;
     margin: 8% !important;
@@ -159,6 +182,5 @@ export default {
     color: white;
     margin: 18px;
 }
-
 </style>
 

@@ -25,7 +25,7 @@
     </el-row>
     <el-row v-if="visibilityList" :gutter="10" type="flex" class="row-bg" justify="space-around">
         <el-col :span="20">
-            <PosterImg :infoPoster="item" v-for="item in infoResponse.hits" :key="item.id" @click.native="ViewFullScreen();"/>            
+            <PosterImg :infoPoster="item" v-for="item in infoResponse.hits" :key="item.id"/>            
         </el-col>
     </el-row>
     <el-row v-if="visibilityFormInvoice" :gutter="20" type="flex" class="row-bg" justify="space-around">
@@ -33,11 +33,6 @@
             <form-create-invoice :dataForm="userWinner"/>
         </el-col>
     </el-row>
-    
-    <!-- Modal donde se carga la informacion del ganador -->
-    <el-dialog :visible.sync="visibilityModal" center>
-        
-    </el-dialog>
   </el-main>
 </template>
 
@@ -62,7 +57,6 @@ export default {
             this.visibility = obj.visibility;
             this.visibilityList = obj.visibilityList;
             this.visibilityLoader = obj.visibilityLoader; 
-            // EventBus.$off('btnChildren')
         })
 
         EventBus.$on('btnChildren', (obj, descriptor) => {
@@ -92,7 +86,6 @@ export default {
             visibilityList: true,
             visibilityLoader: false,
             visibilityFormInvoice: false,
-            visibilityModal: false,
             infoResponse: '',
             infoSellers: '',
             valueMaximun: 20,
@@ -210,11 +203,6 @@ export default {
             this.visibilityModal = false;
             this.visibilityFormInvoice = true;
         },
-
-        viewFullScreen() {
-            this.visibilityModal = true;
-        }
-
     }
 }
 </script>
