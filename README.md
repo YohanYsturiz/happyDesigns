@@ -1,4 +1,4 @@
-# alegra-test
+# Happy Designs
 
 ## Project setup
 ```
